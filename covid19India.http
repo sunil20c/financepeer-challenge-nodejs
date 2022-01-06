@@ -1,0 +1,34 @@
+POST http://localhost:3004/admins/
+Content-Type: application/json
+
+{
+    "username": "kiran",
+    "password": "kiran@2022", 
+    "gender" : "male", 
+    "location": "chennai"
+}
+###
+
+
+POST http://localhost:3004/login
+Content-Type: application/json 
+
+{
+    "username": "sunil",
+    "password": "sunil@2022"
+}
+###
+
+POST http://localhost:3004/users/
+Content-Type: application/json 
+
+{
+    "userId" : 101,
+    "id" : 123, 
+    "title": "sample", 
+    "body" : "This is sample data that is inserted into the table",
+}
+###
+
+GET http://localhost:3004/users/
+###
