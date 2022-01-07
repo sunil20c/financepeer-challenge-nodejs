@@ -3,6 +3,7 @@ const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 const path = require("path");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const dbPath = path.join(__dirname, "covid19India.db");
 
@@ -29,6 +30,27 @@ const initializeDbAndServer = async () => {
 };
 
 initializeDbAndServer();
+
+const authenticateToken = (request, response, next) => {
+  let jwtToken;
+  const authHeader = request.headers["authorization"];
+  if (authHeader !== undefined) {
+    jwtToken = authHeader.split(" ")[1];
+  }
+  if (jwtToken === undefined) {
+    response.status(401);
+    response.send("Invalid JWT Token");
+  } else {
+    jwt.verify(jwtToken, "MY_SECRET_TOKEN", async (error, payload) => {
+      if (error) {
+        response.status(401);
+        response.send("Invalid JWT Token");
+      } else {
+        next();
+      }
+    });
+  }
+};
 
 app.post("/admins", async (request, response) => {
   const { username, password, gender, location } = request.body;
@@ -63,7 +85,12 @@ app.post("/login", async (request, response) => {
   } else {
     const isPasswordMatched = await bcrypt.compare(password, dbUser.password);
     if (isPasswordMatched === true) {
-      response.send("Login Success");
+      const payload = {
+        username: username,
+      };
+      const jwtToken = jwt.sign(payload, "MY_SECRET_TOKEN");
+      response.send({ jwtToken });
+      console.log(jwtToken);
     } else {
       response.status(400);
       response.send("Invalid Password");
@@ -72,8 +99,8 @@ app.post("/login", async (request, response) => {
 });
 
 // insert users into table
-app.post("/users/", async (request, response) => {
-  const userDetails = request.body;
+app.post("/users/", authenticateToken, async (request, response) => {
+  const { userDetails } = request.body;
   const values = userDetails.map(
     (eachUser) =>
       `(${eachUser.userId}, ${eachUser.id}, '${eachUser.title}', '${eachUser.body}')`
@@ -89,7 +116,7 @@ app.post("/users/", async (request, response) => {
 });
 
 // Get users data
-app.get("/users/", async (request, response) => {
+app.get("/users/", authenticateToken, async (request, response) => {
   const getUsersQuery = ` SELECT * FROM users ; `;
   const usersData = await db.all(getUsersQuery);
   response.send(usersData);

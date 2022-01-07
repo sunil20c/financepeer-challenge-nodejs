@@ -14,13 +14,13 @@ POST http://localhost:3004/login
 Content-Type: application/json 
 
 {
-    "username": "sunil",
-    "password": "sunil@2022"
+    "username": "kiran",
+    "password": "kiran@2022"
 }
 ###
 
 POST http://localhost:3004/users/
-Content-Type: application/json 
+Content-Type: application/json
 
 {
     "userId" : 101,
@@ -31,4 +31,5 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3004/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuIiwiaWF0IjoxNjQxNTM1MDQ3fQ.3HkMqDWi2K6YUR0QnkXNrpuxiL1klMBPSVWCMhOLPAY
 ###
