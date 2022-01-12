@@ -6,15 +6,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
-
 const dbPath = path.join(__dirname, "covid19India.db");
 
 const app = express();
 
 app.use(express.json());
-app.use(cors({
-    origin:"http://localhost:3000"
-}));
+app.use(cors());
 
 let db = null;
 
@@ -107,8 +104,9 @@ app.post("/login", async (request, response) => {
 app.post("/users/", authenticateToken, async (request, response) => {
   const { userDetails } = request.body;
   console.log(userDetails);
-  const values = userDetails.map((eachUser) => 
-    `(${eachUser.userId}, ${eachUser.id}, '${eachUser.title}', '${eachUser.body}')`;
+  const values = userDetails.map(
+    (eachUser) =>
+      `(${eachUser.userId}, ${eachUser.id}, '${eachUser.title}', '${eachUser.body}')`
   );
 
   const valuesString = values.join(",");
