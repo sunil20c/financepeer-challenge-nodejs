@@ -6,12 +6,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
+
 const dbPath = path.join(__dirname, "covid19India.db");
 
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin:"http://localhost:3000"
+}));
 
 let db = null;
 
@@ -103,18 +106,20 @@ app.post("/login", async (request, response) => {
 // insert users into table
 app.post("/users/", authenticateToken, async (request, response) => {
   const { userDetails } = request.body;
-  const values = userDetails.map(
-    (eachUser) =>
-      `(${eachUser.userId}, ${eachUser.id}, '${eachUser.title}', '${eachUser.body}')`
+  console.log(userDetails);
+  const values = userDetails.map((eachUser) => 
+    `(${eachUser.userId}, ${eachUser.id}, '${eachUser.title}', '${eachUser.body}')`;
   );
 
   const valuesString = values.join(",");
+
   const insertDataQuery = `
-    INSERT INTO user (user_id, id, title, body) 
+    INSERT INTO users (user_id, id, title, body) 
     VALUES 
        ${valuesString};`;
-  await db.run(insertDataQuery);
-  response.send("User Added Successfully");
+  const dbResponse = await db.run(insertDataQuery);
+  const userId = dbResponse.lastId;
+  response.send("Added successfully");
 });
 
 // Get users data

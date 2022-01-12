@@ -1,16 +1,16 @@
-POST http://localhost:3004/admins/
+POST http://localhost:3001/admins/
 Content-Type: application/json
 
 {
-    "username": "kiran",
-    "password": "kiran@2022", 
+    "username": "praneetha",
+    "password": "praneetha@2021", 
     "gender" : "male", 
     "location": "chennai"
 }
 ###
 
 
-POST http://localhost:3004/login
+POST http://localhost:3001/login
 Content-Type: application/json 
 
 {
@@ -19,17 +19,20 @@ Content-Type: application/json
 }
 ###
 
-POST http://localhost:3004/users/
+POST http://localhost:3001/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuIiwiaWF0IjoxNjQxNTM1MDQ3fQ.3HkMqDWi2K6YUR0QnkXNrpuxiL1klMBPSVWCMhOLPAY
 Content-Type: application/json
+
 
 {
     "userId" : 101,
     "id" : 123, 
     "title": "sample", 
-    "body" : "This is sample data that is inserted into the table",
+    "body" : "This is sample data that is inserted into the table"
 }
+
 ###
 
-GET http://localhost:3004/users/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuIiwiaWF0IjoxNjQxNTM1MDQ3fQ.3HkMqDWi2K6YUR0QnkXNrpuxiL1klMBPSVWCMhOLPAY
+GET http://localhost:3001/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuIiwiaWF0IjoxNjQxNzIzODc2fQ.dACSm0E8KCMESh5bBA2yYbP9CYI6vL5Du1psiDijgkM
 ###
